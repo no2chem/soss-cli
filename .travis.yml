@@ -1,0 +1,28 @@
+language: node_js
+os:
+  - linux
+  - osx
+node_js:
+  - "node"
+  - "lts/*"
+before_script:
+  - yarn global add typescript gts
+cache: yarn
+before_deploy:
+  - yarn pack
+deploy:
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: "soss-cli-*.tgz"
+    skip_cleanup: true
+    on:
+      branch: master
+      node: "node"
+      tags: true
+  - provider: npm
+    api_key: $NPM_TOKEN
+    skip_cleanup: true
+    email: "mwei@cs.ucsd.edu"
+    on:
+      tags: true
