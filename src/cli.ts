@@ -7,7 +7,9 @@ import * as ora from 'ora';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import * as geolib from 'geolib';
-import {getCurrentPosition} from 'macos-location';
+import * as geocoder from 'node-geocoder';
+import geocontext from 'geocontext';
+
 import {getStationStaticDetails, Station, StationStaticDetail, StationStatus} from 'soss';
 import PositionAsDecimal = geolib.PositionAsDecimal;
 
@@ -146,18 +148,33 @@ commander.command('status [name...]').action(async (name) => {
   console.log(table.table(result, {columns: {5: {width: 30}}}));
 });
 
-commander.command('nearest')
+commander.command('nearest [location...]')
     .option('-s --stations <n>', 'Number of stations to return [5]', Number, 5)
-    .action(async (args) => {
-      const location =
-          await spinnerTask(getLocation(), 'Getting current location');
+    .action(async (loc, args) => {
+      let latlong : PositionAsDecimal;
+      if (loc === undefined) {
+        const location = await spinnerTask(geocontext().getCurrentPositionPromise(), 'Getting current location');
+        latlong = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude
+        } as PositionAsDecimal;
+      } else {
+        if (Array.isArray(loc)) {
+          loc = loc.join(" ");
+        }
+        const result = await geocoder({ provider : 'openstreetmap' }).geocode(loc);
+        if (result === undefined || result[0] === undefined) {
+            throw `Couldn't find location ${loc}`;
+        }
+        latlong = {
+          latitude: result[0].latitude as number,
+          longitude: result[0].longitude as number
+        };
+      }
       const data = await spinnerTask(getData(), 'Getting station data');
       const status =
           await spinnerTask(soss.getStatus(), 'Getting Station Status');
-      const latlong = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude
-      } as PositionAsDecimal;
+
       const dataAsLatLong = Object.entries(data).map((e) => {
         return {id: e[0], latitude: e[1].latitude, longitude: e[1].longitude};
       });
