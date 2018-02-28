@@ -73,15 +73,6 @@ const getStaticDetails =
   return outData;
 };
 
-const getLocation = async(): Promise<Position> => {
-  const p = new Promise<Position>((resolve, reject) => {
-    getCurrentPosition(
-        (result: Position) => resolve(result),
-        (error: PositionError) => reject(error));
-  });
-  return await p;
-};
-
 const downloadStationData = async () => {
   const status = await spinnerTask(soss.getStatus(), 'Getting Station IDs');
   const ids = status.map(s => s.id);
