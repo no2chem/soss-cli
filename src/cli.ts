@@ -142,20 +142,22 @@ commander.command('status [name...]').action(async (name) => {
 commander.command('nearest [location...]')
     .option('-s --stations <n>', 'Number of stations to return [5]', Number, 5)
     .action(async (loc, args) => {
-      let latlong : PositionAsDecimal;
+      let latlong: PositionAsDecimal;
       if (loc === undefined) {
-        const location = await spinnerTask(geocontext().getCurrentPositionPromise(), 'Getting current location');
+        const location = await spinnerTask(
+            geocontext().getCurrentPositionPromise(),
+            'Getting current location');
         latlong = {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude
         } as PositionAsDecimal;
       } else {
         if (Array.isArray(loc)) {
-          loc = loc.join(" ");
+          loc = loc.join(' ');
         }
-        const result = await geocoder({ provider : 'openstreetmap' }).geocode(loc);
+        const result = await geocoder({provider: 'openstreetmap'}).geocode(loc);
         if (result === undefined || result[0] === undefined) {
-            throw `Couldn't find location ${loc}`;
+          throw new Error(`Couldn't find location ${loc}`);
         }
         latlong = {
           latitude: result[0].latitude as number,

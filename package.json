@@ -21,6 +21,10 @@
     "soss",
     "cafcp"
   ],
+  "pre-commit": [
+    "check",
+    "test"
+  ],
   "author": {
     "name": "Michael Wei"
   },
@@ -32,6 +36,7 @@
     "cli-tester": "^2.0.0",
     "gts": "^0.5.3",
     "mocha": "^5.0.1",
+    "pre-commit": "^1.2.2",
     "ts-node": "^5.0.0",
     "typescript": "~2.6.1"
   },
