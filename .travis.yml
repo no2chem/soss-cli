@@ -20,12 +20,15 @@ deploy:
     branch: master
     node: node
     tags: true
+    condition: "$TRAVIS_OS_NAME = linux"
 - provider: npm
   api_key: "$NPM_TOKEN"
   skip_cleanup: true
   email: mwei@cs.ucsd.edu
   on:
     tags: true
+    node: node
+    condition: "$TRAVIS_OS_NAME = linux"
 env:
   global:
   - secure: g4xAXjX9/v72/lgjR4eRiObqRA7UxnlMqSp3ypJ+XKIpo64dNiZ+FM8cNAreC1Qp4qMqZOgGdqQzrTtojkDbnLEFQF7a7QCdsoFY0yTd2W7/IQyolL2E8JlbvJXkruSBCI4u1v5cN6BA/1uQy6ZmlUSUq914Pv49R9/27hlR51FFM8devNFHG7nK5un8m3vTXdUmOnThT1BmT9ETKGx8GldpUpIdsNptqOLoPwKCol4Ukds6gJDog4odY1BYHJzXb16MhU3SksbBEgWrctrayFEOnixy0/jKpYRj/Tz4j6XDcJwj73voIzcXTkG+zJjI+3QNTS2mrbRWbuShQ3lT2/iwXv3sNPBmCfNaERYhnnwlMHy66YdiC1aVdE89Y+c4K1VS1M87/tbZbGMqGX/Akm/SfO98G4mBXFEzLndFLGdG9SN1wrgLfwKtHf+vUYuIxZmcws1SZolLxvoIopP+encfaYUenT2lNlzlh1XzqFkbuxAw6uNoVeddImfuwCQErCgqEaM2fbcodu0XfIsSFM8ZF+PiTaiz9d6yxnvpqixesGO1iRp91LChTtLU2fSQqq3GxDztwdeQfryJqEQDPb1X+/YVSut+Fv63VH8Ce5R163Oc+eQlf+GtyeB0PzwtPbufEM9nW8e2siw6D0ZaMYojpVwuxQGAE00awZ8LVnk=
