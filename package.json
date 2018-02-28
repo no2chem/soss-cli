@@ -1,9 +1,9 @@
 {
   "name": "soss-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
-  "main": "./build/src/cli.js",
-  "bin": { "soss" : "./build/src/cli.js"},
+  "main": "build/src/cli.js",
+  "bin": { "soss" : "build/src/cli.js"},
   "scripts": {
     "test": "mocha -r ts-node/register src/**/*.spec.ts --timeout 20000",
     "check": "gts check",
