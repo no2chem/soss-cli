@@ -5,7 +5,7 @@
 > (The tables will render correctly in your terminal if emojis are correctly configured).
 
 # soss-cli
-* 🤔 Query the [California Hydrogen Fuel Cell Partnership](https://cafcp.org)'s
+* 🤔 Query the [CAFCP](https://cafcp.org)'s
      Station Operational Status System (SOSS) from the command line
      
 * 🛰️ Use geolocation to locate nearest stations
