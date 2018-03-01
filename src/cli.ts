@@ -152,7 +152,7 @@ commander.command('nearest [location...]')
           longitude: location.coords.longitude
         } as PositionAsDecimal;
       } else {
-        if (Array.isArray(loc)) {
+        if (Array.isArray(loc) && loc.length > 0) {
           loc = loc.join(' ');
         }
         const result = await geocoder({provider: 'openstreetmap'}).geocode(loc);
