@@ -5,7 +5,7 @@
   "main": "build/src/cli.js",
   "bin": { "soss" : "build/src/cli.js"},
   "scripts": {
-    "test": "mocha -r ts-node/register src/**/*.spec.ts --timeout 20000",
+    "test": "mocha -r ts-node/register src/**/*.spec.ts --timeout 40000",
     "check": "gts check",
     "clean": "gts clean",
     "compile": "tsc -p .",

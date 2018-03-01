@@ -5,6 +5,7 @@
 > (The tables will render correctly in your terminal if emojis are correctly configured).
 
 # soss-cli
+[![Build Status](https://travis-ci.org/no2chem/soss-cli.svg?branch=master)](https://travis-ci.org/no2chem/soss-cli)
 * 🤔 Query the [CAFCP](https://cafcp.org)'s
      Station Operational Status System (SOSS) from the command line
      
