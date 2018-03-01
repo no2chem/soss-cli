@@ -22,9 +22,9 @@ const cliPath = path.join(__dirname, '../build/src/cli.js');
 const cliDataPath = path.join(__dirname, `../build/src/${cli.DATA_FILE}`);
 
 describe('CLI tests', () => {
-  it('should exit with code 0 without input', async () => {
+  it('should exit with code 1 without input', async () => {
     const result: CliResult = await tester(cliPath);
-    result.code.should.eq(0);
+    result.code.should.eq(1);
   });
 
   it('should generate a data file', async () => {

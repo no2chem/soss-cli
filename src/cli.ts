@@ -110,40 +110,46 @@ const stationToTableArray = (station: Station): Array<string|undefined> => {
   ];
 };
 
-commander.command('status [name...]').action(async (name) => {
-  if (Array.isArray(name)) {
-    name = name.join(' ');
-  }
-  const status = await spinnerTask(soss.getStatus(), 'Getting Station Status');
-  const headings =
-      ['🆔  ID', '🏢  Name', 'H35', 'H70', '🕒  Updated', '💬  Message'];
-  let result: Array<Array<string|undefined>> = [];
-  if (name === '') {
-    const mapped = status.map(stationToTableArray);
-    result = mapped;
-  } else {
-    const data = await spinnerTask(getData(), 'Getting station data');
-    const stationStatic = Object.entries(data).find(
-        entry => entry[0] === name ||
-            entry[1].city.toLowerCase() === name.toLowerCase() ||
-            entry[1].city.toLowerCase().startsWith(name.toLowerCase()) ||
-            entry[1].city.toLowerCase().endsWith(name.toLowerCase()));
-    if (stationStatic !== undefined) {
-      const station = status.find(s => s.id === stationStatic[0]);
-      if (station !== undefined) {
-        result.push(stationToTableArray(station));
+commander.command('status [name...]')
+    .description(
+        'Get status of all hydrogen stations or a particular hydrogen station')
+    .action(async (name) => {
+      if (Array.isArray(name)) {
+        name = name.join(' ');
       }
-    }
-  }
-  result.unshift(headings);
-  console.log(table.table(result, {columns: {5: {width: 30}}}));
-});
+      const status =
+          await spinnerTask(soss.getStatus(), 'Getting Station Status');
+      const headings =
+          ['🆔  ID', '🏢  Name', 'H35', 'H70', '🕒  Updated', '💬  Message'];
+      let result: Array<Array<string|undefined>> = [];
+      if (name === '') {
+        const mapped = status.map(stationToTableArray);
+        result = mapped;
+      } else {
+        const data = await spinnerTask(getData(), 'Getting station data');
+        const stationStatic = Object.entries(data).find(
+            entry => entry[0] === name ||
+                entry[1].city.toLowerCase() === name.toLowerCase() ||
+                entry[1].city.toLowerCase().startsWith(name.toLowerCase()) ||
+                entry[1].city.toLowerCase().endsWith(name.toLowerCase()));
+        if (stationStatic !== undefined) {
+          const station = status.find(s => s.id === stationStatic[0]);
+          if (station !== undefined) {
+            result.push(stationToTableArray(station));
+          }
+        }
+      }
+      result.unshift(headings);
+      console.log(table.table(result, {columns: {5: {width: 30}}}));
+    });
 
 commander.command('nearest [location...]')
+    .description(
+        'Get hydrogen stations near current location or given location')
     .option('-s --stations <n>', 'Number of stations to return [5]', Number, 5)
     .action(async (loc, args) => {
       let latlong: PositionAsDecimal;
-      if (loc === undefined) {
+      if (loc.length === 0) {
         const location = await spinnerTask(
             geocontext().getCurrentPositionPromise(),
             'Getting current location');
@@ -152,9 +158,7 @@ commander.command('nearest [location...]')
           longitude: location.coords.longitude
         } as PositionAsDecimal;
       } else {
-        if (Array.isArray(loc) && loc.length > 0) {
-          loc = loc.join(' ');
-        }
+        loc = loc.join(' ');
         const result = await geocoder({provider: 'openstreetmap'}).geocode(loc);
         if (result === undefined || result[0] === undefined) {
           throw new Error(`Couldn't find location ${loc}`);
@@ -196,12 +200,20 @@ commander.command('nearest [location...]')
       console.log(table.table(mapped, {columns: {5: {width: 30}}}));
     });
 
-commander.command('get-data').action(async () => {
-  await downloadStationData();
-});
+commander.command('get-data')
+    .description('Get hydrogen station data file')
+    .action(async () => {
+      await downloadStationData();
+    });
 
-commander.command('clear-data').action(async () => {
-  await fs.unlink(DATA_FILE_PATH);
-});
+commander.command('clear-data')
+    .description('Delete hydrogen station data file')
+    .action(async () => {
+      await fs.unlink(DATA_FILE_PATH);
+    });
 
 commander.parse(process.argv);
+if (!process.argv.slice(2).length) {
+  commander.outputHelp();
+  process.exit(1);
+}
