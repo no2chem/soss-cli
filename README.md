@@ -35,7 +35,8 @@ Running without parameters will automatically print help.
 ```sh
 soss nearest
 ```
-Will output a list of stations nearby:
+Will output a list of stations nearby. If you are running macos, CoreLocation will be used to locate you, otherwise we 
+fallback to IP-based geolocation.
 
 ```
 ~ ❯❯❯ soss nearest                                                                                                                                ✘ 1
