@@ -1,6 +1,6 @@
 {
   "name": "soss-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "build/src/cli.js",
   "bin": { "soss" : "build/src/cli.js"},
