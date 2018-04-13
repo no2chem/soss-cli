@@ -1,6 +1,6 @@
 {
   "name": "soss-cli",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Command line interface for California Hydrogen Station Operational Status System",
   "main": "build/src/cli.js",
   "bin": {

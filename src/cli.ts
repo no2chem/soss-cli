@@ -188,6 +188,9 @@ commander.command('nearest [location...]')
         if (statusItem === undefined) {
           throw new Error(`Unknown station ${stationId}`);
         }
+        if (statusItem.message !== undefined) {
+          statusItem.message = statusItem.message.replace('\r\n', '');
+        }
         mapped.push([
           `${
               Number(geolib.convertUnit('mi', distanceItem.distance))
